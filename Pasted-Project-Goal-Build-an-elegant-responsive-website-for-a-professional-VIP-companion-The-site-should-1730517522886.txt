@@ -1,0 +1,41 @@
+Project Goal: Build an elegant, responsive website for a professional VIP companion. The site should have a high-end, sophisticated feel, with a user-friendly navigation structure and a design that emphasizes luxurious, tasteful aesthetics.
+
+Website Specifications:
+Landing Page
+
+A clean and minimalistic layout featuring a prominent, high-quality image of the VIP companion on the left.
+A sidebar on the right with the site's logo ("Charlotte Emerson" with "New York VIP Companion" in smaller text below), along with navigation links for different sections: Welcome, Introduction, Visuals I-IV, Rates, Answers, Wishlist, Bookings, Tours.
+Keep the color palette neutral with black, white, and muted tones to keep focus on the visuals and text.
+Image Gallery (Visuals I-IV)
+
+Implement multiple image gallery pages labeled "Visuals I," "Visuals II," etc.
+Each page should use a lightbox gallery format, where clicking on an image opens it in a larger view.
+Ensure smooth transitions and high-resolution support for all images.
+Add subtle navigation arrows or dots to guide the user through different visual sections.
+Rates Page
+
+A section detailing rates for various services, organized in a list format.
+Each rate entry should include the title of the service (e.g., "Introduction," "Interlude," etc.), duration, and cost. Use a sophisticated font and layout to make it visually appealing.
+Include any special notes or terms beneath the list, such as requirements for longer dates or additional charges.
+Design this section to maintain the luxury aesthetic, possibly using a dark background with golden or white text to highlight the information.
+Bookings Page
+
+Include a small introduction at the top explaining the booking process and contact options.
+Provide an email link (e.g., "VipCharlotte@Proton.me") and a link to the Twitter handle ("@vip_charlotte1").
+Add a button labeled "Launch Booking Form" that opens a form where clients can request appointments.
+Include a mandatory screening statement that requires new clients to submit ID or references for verification.
+Styling & UX Details
+
+Font and Color: Choose elegant, serif fonts for titles and clean, sans-serif fonts for body text. Stick with a monochrome palette accented by occasional colors from the companion’s branding or clothing in images (e.g., deep reds or greens).
+Responsive Design: Ensure the website looks impeccable on both desktop and mobile devices, adjusting the image grid and sidebar layout as needed.
+Animations: Add subtle animations (e.g., fade-ins or hover effects) to enhance the luxurious feel without overwhelming the user.
+Footer: Simple footer with copyright information, year (e.g., "© Charlotte Emerson 2024"), and a credit to the web designer ("Website by Paramour Designs").
+SEO & Accessibility
+
+Optimize images with alt tags describing each visual respectfully and generally.
+Ensure color contrast for readability and add ARIA labels for screen reader compatibility.
+Expected Deliverables:
+
+A fully functional, visually stunning website with the sections outlined above.
+All pages and features should be implemented in HTML, CSS, and JavaScript (or a suitable framework as needed).
+Files and folders organized for easy maintenance, with descriptive comments in the code.
