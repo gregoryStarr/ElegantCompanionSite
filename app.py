@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
@@ -43,6 +43,7 @@ def load_user(user_id):
     from models import Admin
     return Admin.query.get(int(user_id))
 
+# Email functions
 def send_booking_confirmation(booking):
     msg = Message(
         'Booking Request Received',
@@ -80,6 +81,22 @@ def send_booking_status_update(booking):
 Booking Details:
 Date: {booking.date.strftime('%B %d, %Y')}
 Duration: {booking.duration}
+
+Best regards,
+Venus'''
+    
+    mail.send(msg)
+
+def send_gallery_access_code(client):
+    msg = Message(
+        'Private Gallery Access Code',
+        recipients=[client.email]
+    )
+    msg.body = f'''Dear Valued Client,
+
+Your private gallery access code is: {client.access_code}
+
+This code is unique to you and should not be shared with anyone.
 
 Best regards,
 Venus'''
@@ -126,7 +143,6 @@ def bookings():
             db.session.add(booking)
             db.session.commit()
             
-            # Send confirmation email
             try:
                 send_booking_confirmation(booking)
                 flash('Your booking request has been submitted successfully. Please check your email for confirmation.')
@@ -142,6 +158,30 @@ def bookings():
 @app.route('/tours')
 def tours():
     return render_template('tours.html')
+
+# Private Gallery Routes
+@app.route('/private-gallery/access', methods=['GET', 'POST'])
+def private_gallery_access():
+    if request.method == 'POST':
+        from models import VerifiedClient
+        email = request.form.get('email')
+        access_code = request.form.get('access_code')
+        
+        client = VerifiedClient.query.filter_by(email=email, access_code=access_code).first()
+        if client:
+            client.last_access = datetime.utcnow()
+            db.session.commit()
+            session['private_gallery_access'] = True
+            session['client_email'] = email
+            return redirect(url_for('private_gallery'))
+        flash('Invalid email or access code')
+    return render_template('private_access.html')
+
+@app.route('/private-gallery')
+def private_gallery():
+    if not session.get('private_gallery_access'):
+        return redirect(url_for('private_gallery_access'))
+    return render_template('private_gallery.html')
 
 # Admin routes
 @app.route('/admin/login', methods=['GET', 'POST'])
@@ -186,7 +226,6 @@ def update_booking_status(booking_id):
         booking.status = new_status
         db.session.commit()
         
-        # Send status update email if status changed
         if old_status != new_status:
             try:
                 send_booking_status_update(booking)
@@ -196,6 +235,45 @@ def update_booking_status(booking_id):
         else:
             flash('Booking status updated successfully.')
     return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/verified-clients')
+@login_required
+def verified_clients():
+    from models import VerifiedClient
+    clients = VerifiedClient.query.order_by(VerifiedClient.created_at.desc()).all()
+    return render_template('admin/verified_clients.html', clients=clients)
+
+@app.route('/admin/verified-clients/add', methods=['POST'])
+@login_required
+def add_verified_client():
+    from models import VerifiedClient
+    import random
+    import string
+    
+    email = request.form.get('email')
+    if not email:
+        flash('Email is required')
+        return redirect(url_for('verified_clients'))
+    
+    existing_client = VerifiedClient.query.filter_by(email=email).first()
+    if existing_client:
+        flash('Client already exists')
+        return redirect(url_for('verified_clients'))
+    
+    # Generate random access code
+    access_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+    client = VerifiedClient(email=email, access_code=access_code)
+    
+    try:
+        db.session.add(client)
+        db.session.commit()
+        send_gallery_access_code(client)
+        flash('Client added successfully and access code sent via email')
+    except Exception as e:
+        db.session.rollback()
+        flash('Error adding client')
+    
+    return redirect(url_for('verified_clients'))
 
 with app.app_context():
     import models
