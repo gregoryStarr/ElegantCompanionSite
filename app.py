@@ -5,12 +5,14 @@ from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from functools import wraps
+from flask_mail import Mail, Message
 
 class Base(DeclarativeBase):
     pass
 
 db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
+mail = Mail()
 
 # Configuration
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
@@ -20,7 +22,16 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_pre_ping": True,
 }
 
+# Mail configuration
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME')
+
 db.init_app(app)
+mail.init_app(app)
 
 # Initialize Flask-Login
 login_manager = LoginManager()
@@ -31,6 +42,49 @@ login_manager.login_view = 'admin_login'
 def load_user(user_id):
     from models import Admin
     return Admin.query.get(int(user_id))
+
+def send_booking_confirmation(booking):
+    msg = Message(
+        'Booking Request Received',
+        recipients=[booking.email]
+    )
+    msg.body = f'''Dear {booking.name},
+
+Thank you for your booking request. We have received your request for the following:
+
+Date: {booking.date.strftime('%B %d, %Y')}
+Duration: {booking.duration}
+
+We will review your request and get back to you shortly.
+
+Best regards,
+Venus'''
+    
+    mail.send(msg)
+
+def send_booking_status_update(booking):
+    status_messages = {
+        'approved': 'We are pleased to inform you that your booking request has been approved.',
+        'rejected': 'We regret to inform you that we are unable to accommodate your booking request at this time.',
+        'pending': 'Your booking request is currently under review.'
+    }
+    
+    msg = Message(
+        f'Booking Status Update - {booking.status.title()}',
+        recipients=[booking.email]
+    )
+    msg.body = f'''Dear {booking.name},
+
+{status_messages.get(booking.status, '')}
+
+Booking Details:
+Date: {booking.date.strftime('%B %d, %Y')}
+Duration: {booking.duration}
+
+Best regards,
+Venus'''
+    
+    mail.send(msg)
 
 # Routes
 @app.route('/')
@@ -71,7 +125,14 @@ def bookings():
             )
             db.session.add(booking)
             db.session.commit()
-            flash('Your booking request has been submitted successfully.')
+            
+            # Send confirmation email
+            try:
+                send_booking_confirmation(booking)
+                flash('Your booking request has been submitted successfully. Please check your email for confirmation.')
+            except Exception as e:
+                flash('Your booking request has been submitted, but there was an error sending the confirmation email.')
+            
             return redirect(url_for('bookings'))
         except Exception as e:
             flash('There was an error processing your request.')
@@ -121,9 +182,19 @@ def update_booking_status(booking_id):
     booking = BookingRequest.query.get_or_404(booking_id)
     new_status = request.form.get('status')
     if new_status in ['pending', 'approved', 'rejected']:
+        old_status = booking.status
         booking.status = new_status
         db.session.commit()
-        flash('Booking status updated successfully.')
+        
+        # Send status update email if status changed
+        if old_status != new_status:
+            try:
+                send_booking_status_update(booking)
+                flash('Booking status updated successfully and notification email sent.')
+            except Exception as e:
+                flash('Booking status updated successfully but there was an error sending the notification email.')
+        else:
+            flash('Booking status updated successfully.')
     return redirect(url_for('admin_dashboard'))
 
 with app.app_context():
