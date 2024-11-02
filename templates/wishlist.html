@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="wishlist-section fade-in">
+    <h2>Aspirations & Delights</h2>
+    <div class="content-block">
+        <p class="lead">A curated collection of refined treasures that spark joy and inspiration.</p>
+        
+        <div class="wishlist-categories">
+            <div class="category-item mb-5 fade-in-up">
+                <h3>Literary Pursuits</h3>
+                <ul class="list-unstyled">
+                    <li>First edition works by Virginia Woolf</li>
+                    <li>Vintage leather-bound classics</li>
+                    <li>Contemporary art photography collections</li>
+                </ul>
+            </div>
+            
+            <div class="category-item mb-5 fade-in-up">
+                <h3>Experiential Treasures</h3>
+                <ul class="list-unstyled">
+                    <li>Private viewing at Gagosian Gallery</li>
+                    <li>Weekend retreat at Amangiri</li>
+                    <li>Front row seats at Paris Fashion Week</li>
+                </ul>
+            </div>
+            
+            <div class="category-item mb-5 fade-in-up">
+                <h3>Artisanal Indulgences</h3>
+                <ul class="list-unstyled">
+                    <li>Rare vintage champagne</li>
+                    <li>Handcrafted Japanese tea sets</li>
+                    <li>Artisanal dark chocolates from Belgium</li>
+                </ul>
+            </div>
+            
+            <div class="category-item mb-5 fade-in-up">
+                <h3>Elegant Accessories</h3>
+                <ul class="list-unstyled">
+                    <li>Vintage Cartier timepieces</li>
+                    <li>Hermès silk scarves</li>
+                    <li>Limited edition leather accessories</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="wishlist-note mt-5 fade-in-up">
+            <p class="text-muted">This curated collection reflects my appreciation for life's refined pleasures. While material gifts are never expected, they can add an extra layer of enchantment to our shared experiences.</p>
+            <p class="text-muted">The most meaningful gift is always the gift of your time and thoughtful company.</p>
+        </div>
+    </div>
+</div>
+
+<style>
+.wishlist-section {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.category-item {
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.category-item:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.category-item h3 {
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.category-item ul li {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.category-item ul li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--accent-color);
+}
+
+.wishlist-note {
+    padding: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+</style>
+{% endblock %}
