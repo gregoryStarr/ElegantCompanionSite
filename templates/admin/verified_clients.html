@@ -32,6 +32,7 @@
                     <th>Access Code</th>
                     <th>Created At</th>
                     <th>Last Access</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,6 +42,11 @@
                     <td>{{ client.access_code }}</td>
                     <td>{{ client.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                     <td>{{ client.last_access.strftime('%Y-%m-%d %H:%M:%S') if client.last_access else 'Never' }}</td>
+                    <td>
+                        <form action="{{ url_for('regenerate_access_code', client_id=client.id) }}" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-warning">Generate New Code</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

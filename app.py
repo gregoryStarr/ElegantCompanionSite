@@ -6,6 +6,8 @@ from datetime import datetime
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from functools import wraps
 from flask_mail import Mail, Message
+import random
+import string
 
 class Base(DeclarativeBase):
     pass
@@ -14,7 +16,6 @@ db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 mail = Mail()
 
-# Configuration
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
@@ -22,7 +23,6 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_pre_ping": True,
 }
 
-# Mail configuration
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
@@ -33,7 +33,6 @@ app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME')
 db.init_app(app)
 mail.init_app(app)
 
-# Initialize Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'admin_login'
@@ -43,7 +42,6 @@ def load_user(user_id):
     from models import Admin
     return Admin.query.get(int(user_id))
 
-# Email functions
 def send_booking_confirmation(booking):
     msg = Message(
         'Booking Request Received',
@@ -103,7 +101,6 @@ Venus'''
     
     mail.send(msg)
 
-# Routes
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -159,7 +156,6 @@ def bookings():
 def tours():
     return render_template('tours.html')
 
-# Private Gallery Routes
 @app.route('/private-gallery/access', methods=['GET', 'POST'])
 def private_gallery_access():
     if request.method == 'POST':
@@ -183,7 +179,6 @@ def private_gallery():
         return redirect(url_for('private_gallery_access'))
     return render_template('private_gallery.html')
 
-# Admin routes
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
     if current_user.is_authenticated:
@@ -193,12 +188,19 @@ def admin_login():
         from models import Admin
         username = request.form.get('username')
         password = request.form.get('password')
+        
+        if not username or not password:
+            flash('Please provide both username and password', 'danger')
+            return render_template('admin/login.html')
+        
         user = Admin.query.filter_by(username=username).first()
         
         if user and user.check_password(password):
             login_user(user)
+            flash('Successfully logged in', 'success')
             return redirect(url_for('admin_dashboard'))
-        flash('Invalid username or password')
+        
+        flash('Invalid username or password', 'danger')
     
     return render_template('admin/login.html')
 
@@ -247,8 +249,6 @@ def verified_clients():
 @login_required
 def add_verified_client():
     from models import VerifiedClient
-    import random
-    import string
     
     email = request.form.get('email')
     if not email:
@@ -260,7 +260,6 @@ def add_verified_client():
         flash('Client already exists')
         return redirect(url_for('verified_clients'))
     
-    # Generate random access code
     access_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
     client = VerifiedClient(email=email, access_code=access_code)
     
@@ -275,14 +274,32 @@ def add_verified_client():
     
     return redirect(url_for('verified_clients'))
 
+@app.route('/admin/verified-clients/<int:client_id>/regenerate-code', methods=['POST'])
+@login_required
+def regenerate_access_code(client_id):
+    from models import VerifiedClient
+    client = VerifiedClient.query.get_or_404(client_id)
+    
+    new_access_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+    client.access_code = new_access_code
+    
+    try:
+        db.session.commit()
+        send_gallery_access_code(client)
+        flash('New access code generated and sent to client via email')
+    except Exception as e:
+        db.session.rollback()
+        flash('Error generating new access code')
+    
+    return redirect(url_for('verified_clients'))
+
 with app.app_context():
     import models
     db.create_all()
     
-    # Create admin user if it doesn't exist
     from models import Admin
     if not Admin.query.filter_by(username='admin').first():
         admin = Admin(username='admin')
-        admin.set_password('admin123')  # Default password, should be changed
+        admin.set_password('admin123')
         db.session.add(admin)
         db.session.commit()

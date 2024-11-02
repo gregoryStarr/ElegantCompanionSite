@@ -12,4 +12,6 @@ dependencies = [
     "flask-wtf>=1.2.2",
     "flask-login>=0.6.3",
     "flask-mail>=0.10.0",
+    "werkzeug",
+    "sqlalchemy>=2.0.36",
 ]
