@@ -45,6 +45,14 @@ def generate_gallery_images():
         for image_id in range(1, 7):
             image_path = f"{gallery_path}/image{image_id}.jpg"
             create_placeholder_image(600, 800, f"Gallery {gallery_id}\nImage {image_id}", image_path)
+    
+    # Create private gallery images
+    private_gallery_path = "static/images/private"
+    os.makedirs(private_gallery_path, exist_ok=True)
+    
+    for image_id in range(1, 13):
+        image_path = f"{private_gallery_path}/image{image_id}.jpg"
+        create_placeholder_image(600, 800, f"Private Gallery\nImage {image_id}", image_path)
 
 if __name__ == "__main__":
     generate_gallery_images()

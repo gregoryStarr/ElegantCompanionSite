@@ -1,0 +1,50 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Verified Clients</h2>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <div class="card bg-dark mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Add New Client</h5>
+            <form action="{{ url_for('add_verified_client') }}" method="POST">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Client Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Client</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Access Code</th>
+                    <th>Created At</th>
+                    <th>Last Access</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in clients %}
+                <tr>
+                    <td>{{ client.email }}</td>
+                    <td>{{ client.access_code }}</td>
+                    <td>{{ client.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ client.last_access.strftime('%Y-%m-%d %H:%M:%S') if client.last_access else 'Never' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

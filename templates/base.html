@@ -24,6 +24,7 @@
                         <li class="nav-item"><a href="{{ url_for('visuals', gallery_id=2) }}" class="nav-link">Visuals II</a></li>
                         <li class="nav-item"><a href="{{ url_for('visuals', gallery_id=3) }}" class="nav-link">Visuals III</a></li>
                         <li class="nav-item"><a href="{{ url_for('visuals', gallery_id=4) }}" class="nav-link">Visuals IV</a></li>
+                        <li class="nav-item"><a href="{{ url_for('private_gallery_access') }}" class="nav-link">Private Gallery</a></li>
                         <li class="nav-item"><a href="{{ url_for('rates') }}" class="nav-link">Rates</a></li>
                         <li class="nav-item"><a href="{{ url_for('answers') }}" class="nav-link">Answers</a></li>
                         <li class="nav-item"><a href="{{ url_for('wishlist') }}" class="nav-link">Wishlist</a></li>
@@ -42,6 +43,7 @@
             <p>&copy; Venus 2024 | Website by Astralis One LLC</p>
         </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/animations.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>
