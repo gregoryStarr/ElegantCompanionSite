@@ -3,48 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Venus - Global VIP Companion</title>
+    <title>{% block title %}Venus - Elite Global Companion | Sophisticated Experiences{% endblock %}</title>
+    
+    <!-- Enhanced SEO Meta Tags -->
+    <meta name="description" content="{% block meta_description %}Experience the epitome of refined companionship with Venus, your sophisticated global confidante. Discover curated moments of genuine connection and elegance in major cities worldwide.{% endblock %}">
+    <meta name="keywords" content="elite companion, luxury experiences, sophisticated companionship, global companion, refined encounters, private muse">
+    <meta name="author" content="Venus">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Enhanced Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Venus - Elite Global Companion | Curated Sophistication">
+    <meta property="og:description" content="Discover the art of refined companionship through curated experiences and genuine connections. Your journey to sophisticated moments begins here.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; img-src 'self' data: https:; style-src 'self' https: 'unsafe-inline'; script-src 'self' https: 'unsafe-inline';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains">
+    
+    <link rel="canonical" href="{{ request.url }}">
     <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-    <meta name="description" content="Exclusive VIP companion services - Venus">
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="{{ url_for('static', filename='js/animations.js') }}" as="script">
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3 sidebar">
-                <div class="logo-container">
+                <div class="logo-container fade-in">
                     <h1>Venus</h1>
-                    <p class="subtitle">Global VIP Companion</p>
+                    <p class="subtitle">Elite Global Companion</p>
                 </div>
                 <nav>
-                    <ul class="nav flex-column">
+                    <ul class="nav flex-column fade-in-up">
                         <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link">Welcome</a></li>
                         <li class="nav-item"><a href="{{ url_for('introduction') }}" class="nav-link">Introduction</a></li>
-                        <li class="nav-item"><a href="{{ url_for('visuals', gallery_id=1) }}" class="nav-link">Visuals I</a></li>
-                        <li class="nav-item"><a href="{{ url_for('visuals', gallery_id=2) }}" class="nav-link">Visuals II</a></li>
-                        <li class="nav-item"><a href="{{ url_for('visuals', gallery_id=3) }}" class="nav-link">Visuals III</a></li>
-                        <li class="nav-item"><a href="{{ url_for('visuals', gallery_id=4) }}" class="nav-link">Visuals IV</a></li>
-                        <li class="nav-item"><a href="{{ url_for('private_gallery_access') }}" class="nav-link">Private Gallery</a></li>
-                        <li class="nav-item"><a href="{{ url_for('rates') }}" class="nav-link">Rates</a></li>
-                        <li class="nav-item"><a href="{{ url_for('answers') }}" class="nav-link">Answers</a></li>
-                        <li class="nav-item"><a href="{{ url_for('wishlist') }}" class="nav-link">Wishlist</a></li>
-                        <li class="nav-item"><a href="{{ url_for('bookings') }}" class="nav-link">Bookings</a></li>
-                        <li class="nav-item"><a href="{{ url_for('tours') }}" class="nav-link">Tours</a></li>
+                        <li class="nav-item"><a href="{{ url_for('visuals', gallery_id=1) }}" class="nav-link">Moments I</a></li>
+                        <li class="nav-item"><a href="{{ url_for('visuals', gallery_id=2) }}" class="nav-link">Moments II</a></li>
+                        <li class="nav-item"><a href="{{ url_for('visuals', gallery_id=3) }}" class="nav-link">Moments III</a></li>
+                        <li class="nav-item"><a href="{{ url_for('visuals', gallery_id=4) }}" class="nav-link">Moments IV</a></li>
+                        <li class="nav-item"><a href="{{ url_for('private_gallery_access') }}" class="nav-link">Private Collection</a></li>
+                        <li class="nav-item"><a href="{{ url_for('rates') }}" class="nav-link">Investment</a></li>
+                        <li class="nav-item"><a href="{{ url_for('answers') }}" class="nav-link">Essential Details</a></li>
+                        <li class="nav-item"><a href="{{ url_for('wishlist') }}" class="nav-link">Aspirations</a></li>
+                        <li class="nav-item"><a href="{{ url_for('bookings') }}" class="nav-link">Connect</a></li>
+                        <li class="nav-item"><a href="{{ url_for('tours') }}" class="nav-link">Global Sojourns</a></li>
                     </ul>
                 </nav>
             </div>
             <div class="col-md-9 main-content">
-                {% block content %}{% endblock %}
+                <div class="content-wrapper fade-in">
+                    {% block content %}{% endblock %}
+                </div>
             </div>
         </div>
     </div>
-    <footer class="footer">
+    <footer class="footer fade-in">
         <div class="container">
-            <p>&copy; Venus 2024 | Website by Astralis One LLC</p>
+            <p>&copy; Venus 2024 | Crafted with Elegance by Astralis One</p>
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/animations.js') }}"></script>
     {% block scripts %}{% endblock %}
+    
+    <!-- Enhanced Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Venus - Elite Global Companion",
+        "description": "Curated sophisticated experiences and refined companionship for discerning individuals seeking genuine connection and elegance.",
+        "url": "{{ request.url_root }}",
+        "priceRange": "$$$$",
+        "areaServed": "Global",
+        "knowsAbout": ["Luxury Lifestyle", "Cultural Experiences", "Fine Dining", "Art & Culture", "Global Travel"],
+        "availableLanguage": ["English", "French"]
+    }
+    </script>
 </body>
 </html>
