@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bookings-section fade-in">
+    <h2>Bookings</h2>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="booking-form">
+        <p class="lead mb-4">To arrange a meeting, please fill out the form below.</p>
+        <form method="POST" action="{{ url_for('bookings') }}">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="date" class="form-label">Preferred Date</label>
+                <input type="date" class="form-control" id="date" name="date" required>
+            </div>
+            <div class="mb-3">
+                <label for="duration" class="form-label">Duration</label>
+                <select class="form-control" id="duration" name="duration" required>
+                    <option value="2 hours">2 Hours</option>
+                    <option value="4 hours">4 Hours</option>
+                    <option value="6 hours">6 Hours</option>
+                    <option value="12 hours">12 Hours</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="message" class="form-label">Additional Information</label>
+                <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Request</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

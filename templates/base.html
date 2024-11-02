@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charlotte Emerson - New York VIP Companion</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <meta name="description" content="Exclusive VIP companion services in New York - Charlotte Emerson">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 sidebar">
+                <div class="logo-container">
+                    <h1>Charlotte Emerson</h1>
+                    <p class="subtitle">New York VIP Companion</p>
+                </div>
+                <nav>
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link">Welcome</a></li>
+                        <li class="nav-item"><a href="{{ url_for('introduction') }}" class="nav-link">Introduction</a></li>
+                        <li class="nav-item"><a href="{{ url_for('visuals', gallery_id=1) }}" class="nav-link">Visuals I</a></li>
+                        <li class="nav-item"><a href="{{ url_for('visuals', gallery_id=2) }}" class="nav-link">Visuals II</a></li>
+                        <li class="nav-item"><a href="{{ url_for('visuals', gallery_id=3) }}" class="nav-link">Visuals III</a></li>
+                        <li class="nav-item"><a href="{{ url_for('visuals', gallery_id=4) }}" class="nav-link">Visuals IV</a></li>
+                        <li class="nav-item"><a href="{{ url_for('rates') }}" class="nav-link">Rates</a></li>
+                        <li class="nav-item"><a href="{{ url_for('answers') }}" class="nav-link">Answers</a></li>
+                        <li class="nav-item"><a href="{{ url_for('wishlist') }}" class="nav-link">Wishlist</a></li>
+                        <li class="nav-item"><a href="{{ url_for('bookings') }}" class="nav-link">Bookings</a></li>
+                        <li class="nav-item"><a href="{{ url_for('tours') }}" class="nav-link">Tours</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-md-9 main-content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; Charlotte Emerson 2024 | Website by Paramour Designs</p>
+        </div>
+    </footer>
+    <script src="{{ url_for('static', filename='js/animations.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,13 @@
+<svg width="200" height="100" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .text { font-family: 'Cormorant Garamond', serif; fill: #ffffff; }
+        .main-text { font-size: 24px; }
+        .sub-text { font-size: 12px; }
+    </style>
+    <text x="100" y="40" class="text main-text" text-anchor="middle">
+        Charlotte Emerson
+    </text>
+    <text x="100" y="60" class="text sub-text" text-anchor="middle">
+        New York VIP Companion
+    </text>
+</svg>

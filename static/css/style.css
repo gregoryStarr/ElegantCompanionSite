@@ -1,0 +1,116 @@
+:root {
+    --primary-color: #1a1a1a;
+    --secondary-color: #ffffff;
+    --accent-color: #8b0000;
+    --text-color: #e0e0e0;
+    --spacing: 2rem;
+}
+
+body {
+    font-family: 'Cormorant Garamond', serif;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+}
+
+.sidebar {
+    padding: var(--spacing);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 100vh;
+    position: fixed;
+    width: 300px;
+}
+
+.logo-container {
+    text-align: center;
+    margin-bottom: var(--spacing);
+}
+
+.logo-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 300;
+}
+
+.subtitle {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.nav-link {
+    color: var(--text-color);
+    transition: color 0.3s ease;
+    padding: 0.5rem 0;
+}
+
+.nav-link:hover {
+    color: var(--accent-color);
+}
+
+.main-content {
+    margin-left: 300px;
+    padding: var(--spacing);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+.booking-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-control {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-color);
+}
+
+.rates-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.rate-item {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer {
+    text-align: center;
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        min-height: auto;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}

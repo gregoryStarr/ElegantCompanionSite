@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="welcome-section fade-in">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="featured-image">
+                <img src="{{ url_for('static', filename='images/featured.jpg') }}" alt="Elegant portrait" class="img-fluid">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="welcome-text">
+                <h2>Welcome</h2>
+                <p class="lead">Step into a world of sophistication and elegance.</p>
+                <p>I am Charlotte Emerson, your distinguished companion in New York City. Allow me to introduce you to an experience of unparalleled refinement and connection.</p>
+                <a href="{{ url_for('introduction') }}" class="btn btn-outline-light mt-4">Learn More</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
